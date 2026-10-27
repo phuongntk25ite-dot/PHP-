@@ -1,0 +1,48 @@
+<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+// Load Composer's autoloader (hoặc dùng require các file lẻ nếu không dùng composer)
+require 'PHPMailer/vendor/autoload.php';
+
+// Create an instance; passing `true` enables exceptions
+$mail = new PHPMailer(true);
+$mail->CharSet = "UTF-8"; // bắt buộc có dòng này nếu bạn gửi mail tiếng Việt
+
+try {
+    // Server settings
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;         // Bật Debug khi gửi mail
+    $mail->isSMTP();                                // Gửi bằng SMTP
+    $mail->Host       = 'smtp.gmail.com';           // Địa chỉ máy chủ SMTP
+    $mail->SMTPAuth   = true;                       // Bật xác thực SMTP
+    $mail->Username   = 'phuongntk.25ite@vku.udn.vn';         // Địa chỉ mail của bạn
+    $mail->Password   = 'qsnttrufrhinnraz';         // Mật khẩu ứng dụng bạn vừa tạo
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; // Bật mã hóa SSL
+    ///TLS
+    $mail->Port       = 465;                        // TCP port to connect to; use 587 if Encryption STARTTLS
+
+    // Recipients
+    $mail->setFrom('phuongntk.25ite@vku.udn.vn', 'Người Gửi');
+    $mail->addAddress('anhptm.25ite@vku.udn.vn', 'Người Nhận'); // Add a recipient
+    //$mail->addAddress('ellen@example.com');             // Người nhận thứ 2
+    //$mail->addReplyTo('info@example.com', 'Information');
+    //$mail->addCC('cc@example.com');                     // Nếu bạn muốn CC email
+    //$mail->addBCC('bcc@example.com');
+
+    // Attachments
+    //$mail->addAttachment('/var/tmp/file.tar.gz');      // Tệp đính kèm
+    //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');  // Optional name
+
+    // Content
+    $mail->isHTML(true);                                  // Set email format to HTML
+    $mail->Subject = 'Đây là tiêu đề của mail';
+    $mail->Body    = 'This is the HTML message body <b>in bold!</b> Mail đã gửi thành công, đây là nội dung mail';
+    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+    echo 'Mail của bạn đã được gửi';
+} catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+}
+?>
